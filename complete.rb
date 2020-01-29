@@ -417,25 +417,28 @@ run 'rm app/views/layouts/application.html.erb'
 file 'app/views/layouts/application.html.erb',
   add_layout
 
+file 'app/views/shared/_footer.html.erb',
+  add_footer
 
-file 'app/views/shared/_flashes.html.erb', <<-HTML
-<% if notice %>
-  <div class="alert alert-info alert-dismissible fade show m-1" role="alert">
-    <%= notice %>
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-<% end %>
-<% if alert %>
-  <div class="alert alert-warning alert-dismissible fade show m-1" role="alert">
-    <%= alert %>
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-<% end %>
-HTML
+
+run 'rm public/500.html'
+file 'public/500.html',
+  update_error_page(500)
+
+run 'rm public/404.html'
+file 'public/404.html',
+  update_error_page(404)
+
+run 'rm public/422.html'
+file 'public/422.html',
+  update_error_page(422)
+
+
+file 'app/views/shared/_navbar.html.erb',
+  add_navbar
+
+file 'app/views/shared/_flashes.html.erb',
+  add_flash
 
 run 'curl -L https://github.com/lewagon/awesome-navbars/raw/master/templates/_navbar_wagon.html.erb > app/views/shared/_navbar.html.erb'
 run 'curl -L https://raw.githubusercontent.com/lewagon/rails-templates/master/logo.png > app/assets/images/logo.png'
