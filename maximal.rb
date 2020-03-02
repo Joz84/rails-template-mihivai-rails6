@@ -682,8 +682,8 @@ TXT
 
   # Devise install + user
   ########################################
-  generate('devise:install')
-  generate('devise', 'User')
+  # generate('devise:install')
+  # generate('devise', 'User')
 
   # App controller
   ########################################
