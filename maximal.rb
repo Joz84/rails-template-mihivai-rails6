@@ -315,6 +315,7 @@ def add_email_interceptor_initializer
     end
   RUBY
 end
+
 def add_email_interceptor_class
   <<-RUBY
     class EmailInterceptor
@@ -323,8 +324,9 @@ def add_email_interceptor_class
         message.to = [ ENV['DEFAULT_EMAIL'] ]
       end
     end
- RUBY
+  RUBY
 end
+
 def add_sendgrid_initializer
   <<-RUBY
    ActionMailer::Base.smtp_settings = {
@@ -566,8 +568,8 @@ file 'config/initializers/email_interceptor.rb',
 file 'config/initializers/smtp.rb',
   add_sendgrid_initializer
 
-file 'lib/email_interceptor.rb',
-  add_email_interceptor_class
+# file 'lib/email_interceptor.rb',
+#   add_email_interceptor_class
 
 # Layout
 ########################################
