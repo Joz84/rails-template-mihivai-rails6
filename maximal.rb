@@ -320,7 +320,7 @@ def add_email_interceptor_class
 <<-CODE
 class EmailInterceptor
   def self.delivering_email(message)
-    message.subject = "#{message.to} #{message.subject}"
+    message.subject = message.to + " " + message.subject
     message.to = [ ENV['DEFAULT_EMAIL'] ]
   end
 end
