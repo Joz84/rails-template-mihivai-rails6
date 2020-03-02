@@ -317,14 +317,14 @@ RUBY
 end
 
 def add_email_interceptor_class
-<<-RUBY
+<<-CODE
 class EmailInterceptor
   def self.delivering_email(message)
     message.subject = "#{message.to} #{message.subject}"
     message.to = [ ENV['DEFAULT_EMAIL'] ]
   end
 end
-RUBY
+CODE
 end
 
 def add_sendgrid_initializer
