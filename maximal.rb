@@ -668,7 +668,7 @@ after_bundle do
   generate("active_admin:install", "User")
   generate("activeadmin_addons:install")
   append_file 'config/initializers/active_admin.rb', add_active_admin_method
-  gsub_file('config/initializers/active_admin.rb','config.authentication_method = :authenticate_user!', 'config.authentication_method = :authenticate_admin!')
+  gsub_file('config/initializers/active_admin.rb', 'config.authentication_method = :authenticate_user!', 'config.authentication_method = :authenticate_admin!')
   # Routes
   ########################################
   route "root to: 'pages#home'"
