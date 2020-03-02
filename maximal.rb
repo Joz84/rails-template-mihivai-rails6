@@ -342,11 +342,20 @@ ActionMailer::Base.smtp_settings = {
 }
 RUBY
 end
-def add_locales
+def add_fr_locales
 <<-YAML
-time:
-  formats:
-    long: "%d/%m/%Y %H:%M"
+fr:
+  time:
+    formats:
+      long: "%d/%m/%Y %H:%M"
+YAML
+end
+def add_en_locales
+<<-YAML
+en:
+  time:
+    formats:
+      long: "%d/%m/%Y %H:%M"
 YAML
 end
 def add_staging_environment
@@ -466,6 +475,13 @@ Rails.application.configure do
 end
 RUBY
 end
+def add_active_admin_method
+<<-RUBY
+def authenticate_admin!
+  redirect_to new_user_session_path unless current_user && current_user.admin
+end
+RUBY
+end
 run "if uname | grep -q 'Darwin'; then pgrep spring | xargs kill -9; fi"
 
 # GEMFILE
@@ -577,10 +593,10 @@ file 'config/initializers/smtp.rb',
   add_sendgrid_initializer
 
 file 'config/locales/fr.yml',
-  add_locales
-
+  add_fr_locales
+run 'rm config/locales/en.yml'
 file 'config/locales/en.yml',
-  add_locales
+  add_en_locales
 
 # Layout
 ########################################
@@ -651,6 +667,8 @@ after_bundle do
   generate(:controller, 'pages', 'home', '--skip-routes', '--no-test-framework')
   generate("active_admin:install", "User")
   generate("activeadmin_addons:install")
+  append_file 'config/initializers/active_admin.rb', add_active_admin_method
+  gsub_file('config.authentication_method = :authenticate_user!', 'config.authentication_method = :authenticate_admin!')
   # Routes
   ########################################
   route "root to: 'pages#home'"
