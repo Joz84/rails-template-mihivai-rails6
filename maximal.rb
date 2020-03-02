@@ -11,6 +11,8 @@ def add_gems
   gem 'rails', '#{Rails.version}'
   gem 'redis'
   gem 'sendgrid-ruby'
+  gem 'activeadmin'
+  gem 'activeadmin_addons'
 
   gem 'autoprefixer-rails'
   gem 'font-awesome-sass', '~> 5.6.1'
@@ -340,6 +342,13 @@ ActionMailer::Base.smtp_settings = {
 }
 RUBY
 end
+def add_locales
+<<-YAML
+time:
+  formats:
+    long: "%d/%m/%Y %H:%M"
+YAML
+end
 def add_staging_environment
 <<-RUBY
 Rails.application.configure do
@@ -567,6 +576,12 @@ file 'config/initializers/email_interceptor.rb',
 file 'config/initializers/smtp.rb',
   add_sendgrid_initializer
 
+file 'config/locales/fr.yml',
+  add_locales
+
+file 'config/locales/en.yml',
+  add_locales
+
 # Layout
 ########################################
 file 'app/views/layouts/_google_analytics.html.erb',
@@ -634,7 +649,8 @@ after_bundle do
   rails_command 'db:drop db:create db:migrate'
   generate('simple_form:install', '--bootstrap')
   generate(:controller, 'pages', 'home', '--skip-routes', '--no-test-framework')
-
+  generate("active_admin:install", "User")
+  generate("activeadmin_addons:install")
   # Routes
   ########################################
   route "root to: 'pages#home'"
