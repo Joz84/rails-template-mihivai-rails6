@@ -45,4 +45,3 @@ rails new \
 - Active Admin
 - Sendgrid
 - Email interceptor
-- Sendgrid

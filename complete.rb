@@ -665,7 +665,9 @@ after_bundle do
   rails_command 'db:drop db:create db:migrate'
   generate('simple_form:install', '--bootstrap')
   generate(:controller, 'pages', 'home', '--skip-routes', '--no-test-framework')
-  generate("active_admin:install", "User")
+  generate('devise:install')
+  generate('devise', 'User')
+  generate("active_admin:install")
   generate("activeadmin_addons:install")
   append_file 'config/initializers/active_admin.rb', add_active_admin_method
   gsub_file('config/initializers/active_admin.rb', 'config.authentication_method = :authenticate_user!', 'config.authentication_method = :authenticate_admin!')
