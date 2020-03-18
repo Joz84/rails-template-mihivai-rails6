@@ -482,6 +482,11 @@ def authenticate_admin!
 end
 RUBY
 end
+def add_seed
+<<-RUBY
+User.create!(email: 'admin@example.com', password: 'azerty', password_confirmation: 'azerty', admin: true)
+RUBY
+end
 run "if uname | grep -q 'Darwin'; then pgrep spring | xargs kill -9; fi"
 
 # GEMFILE
@@ -667,12 +672,16 @@ after_bundle do
   generate(:controller, 'pages', 'home', '--skip-routes', '--no-test-framework')
   generate('devise:install')
   generate('devise', 'User')
+  generate('migration', 'AddAdminToUsers admin:boolean')
   generate("active_admin:install")
   generate("activeadmin_addons:install")
   append_file 'config/initializers/active_admin.rb', add_active_admin_method
-  gsub_file('config/initializers/active_admin.rb', 'config.authentication_method = :authenticate_user!', 'config.authentication_method = :authenticate_admin!')
+  gsub_file('config/initializers/active_admin.rb', 'config.authentication_method = :authenticate_admin_user!', 'config.authentication_method = :authenticate_admin!')
   gsub_file('config/initializers/active_admin.rb', 'config.current_user_method = :current_admin_user', 'config.current_user_method = :current_user')
 
+  #Seed
+  file 'db/seed.rb',
+  add_seed
   # Routes
   ########################################
   route "root to: 'pages#home'"
