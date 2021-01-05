@@ -119,7 +119,7 @@ def add_pages_legal
     À tout moment, l’Utilisateur peut faire le choix d’exprimer et de modifier ses souhaits en matière de Cookies. <a href="yourdomain.com">yourdomain.com/</a> pourra en outre faire appel aux services de prestataires externes pour l’aider à recueillir et traiter les informations décrites dans cette section.</p>
     	      À tout moment, l’Utilisateur peut faire le choix d’exprimer et de modifier ses souhaits en matière de Cookies en cliquant sur le lien ci-dessous. <a href="yourdomain.com/">yourdomain.com/</a> pourra en outre faire appel aux services de prestataires externes pour l’aider à recueillir et traiter les informations décrites dans cette section.</p>
     <div class="d-flex justify-content-center mb-4">
-      <div class="btn btn-salmon text-white btn-rounded btn:focus font-size-16px cursor-pointer py-2" data-toggle="modal" data-target="#cookiesModal">PERSONNALISER LES COOKIES</div>
+      <div class="btn btn-cookie text-white btn-rounded btn:focus font-size-16px cursor-pointer py-2" data-toggle="modal" data-target="#cookiesModal">PERSONNALISER LES COOKIES</div>
     </div>
   </div>
 </div>
@@ -559,6 +559,9 @@ run 'curl -L https://raw.githubusercontent.com/ClaudineP435433/rails-template-mi
 run 'curl -L https://raw.githubusercontent.com/ClaudineP435433/rails-template-mihivai-rails6/master/navbar-mihivai.scss > app/assets/stylesheets/components/_navbar.scss'
 
 file 'app/assets/stylesheets/components/_utilities.scss', <<-CSS
+.max-width-650px {
+  max-width: 650px;
+}
 .page-min-height {
   min-height: calc(100vh - 170px)
 }
@@ -566,10 +569,16 @@ file 'app/assets/stylesheets/components/_utilities.scss', <<-CSS
   cursor: pointer;
 }
 .font-size-12px {
-    font-size: 12px;
+  font-size: 12px;
 }
 .font-size-16px {
-    font-size: 16px;
+  font-size: 16px;
+}
+.text-cookie {
+  color: $cookie;
+}
+.border-cookie {
+  border-color: $cookie;
 }
 CSS
 
@@ -588,13 +597,37 @@ file 'app/assets/stylesheets/config/_fonts.scss', <<-CSS
 CSS
 
 file 'app/assets/stylesheets/config/_colors.scss', <<-CSS
+# color dedicated to cookies (nav/buttons/text) - "blue" should be replace by your theme color
+$cookie: blue
 $dark-gray: #39404d;
 $light-gray: #f9f9f9;
-$salmon: #fd736d;
 $dark-transparent: rgba(50, 50, 50, 0.8);
 CSS
 
 file 'app/assets/stylesheets/config/_bootstrap_variables.scss', <<-CSS
+CSS
+
+file 'app/assets/stylesheets/units/_button.scss', <<-CSS
+.btn-cookie {
+  &:hover{
+    color: white;
+    background-color: $cookie;
+    padding: 0.25rem 1.5rem;
+    margin: 8px 0;
+    line-height: 1.5;
+    border-radius: 20px;
+    border: 1px solid transparent;
+    transition: all 0.15s ease-in-out;
+    &:hover {
+      text-decoration: none;
+      background-color: darken($cookie, 5%);
+    }
+  }
+}
+CSS
+
+file 'app/assets/stylesheets/units/_index.scss', <<-CSS
+@import "button";
 CSS
 
 file 'app/assets/stylesheets/application.scss', <<-JS
@@ -611,6 +644,7 @@ file 'app/assets/stylesheets/application.scss', <<-JS
 // Your CSS partials
 @import "layouts/index";
 @import "components/index";
+@import "units/index";
 //@import "pages/index";
 JS
 

@@ -24,7 +24,7 @@
     top: 0.1em;
     left: 0.1em;
     height: 1.35em;
-    background-color: $salmon;
+    background-color: $cookie;
     border: 1px solid $dark-gray;
     border-radius: 1.35em;
     transition: all 0.2s;
@@ -32,11 +32,11 @@
     right: 1.3em;
   }
   input:checked + label {
-    background-color: $salmon;
+    background-color: $cookie;
     &:after {
     right: 0.1em;
     left: 1.3em;
-    border: 1px solid $salmon;
+    border: 1px solid $cookie;
     }
   }
 }
