@@ -31,6 +31,7 @@ Get a rails 5.2+ app ready to be deployed on Heroku with ths following improveme
 - HTML Head including : Google Analytics, Google Structured Data, Metadata/Title/Description
 - Standard NavBard and Footer
 - Devise install with a generated `User` model.
+- Git init, add and comit
 
 
 ## Complete
@@ -43,5 +44,5 @@ rails new \
   CHANGE_THIS_TO_YOUR_RAILS_APP_NAME
 ```
 - Active Admin
-- Sendgrid
+- Postmark
 - Email interceptor
