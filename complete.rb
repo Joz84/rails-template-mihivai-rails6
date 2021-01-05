@@ -10,7 +10,7 @@ def add_gems
   gem 'puma'
   gem 'rails', '#{Rails.version}'
   gem 'redis'
-  gem 'sendgrid-ruby'
+  gem 'postmark-rails'
   gem 'activeadmin'
   gem 'activeadmin_addons'
 
@@ -59,15 +59,15 @@ def add_layout
     <%= yield(:robots) %>
     <%= csrf_meta_tags %>
     <%= action_cable_meta_tag %>
-    <%= stylesheet_link_tag 'application', media: 'all' %>
+    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%#= stylesheet_pack_tag 'application', media: 'all' %> <!-- Uncomment if you import CSS in app/javascript/packs/application.js -->
+    #{"    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload', defer: true %>\n" if Rails.version < "6"}
+    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload', defer: true %>
   </head>
   <body>
     <%= render 'shared/navbar' %>
     <%= render 'shared/flashes' %>
     <%= yield %>
-#{"    <%= javascript_include_tag 'application' %>\n" if Rails.version < "6"}
-    <%= javascript_pack_tag 'application' %>
     <%= render 'shared/footer' %>
 
     <script type="application/ld+json">
@@ -329,19 +329,28 @@ end
 CODE
 end
 
-def add_sendgrid_initializer
+def add_postmark_initializer
 <<-RUBY
 ActionMailer::Base.smtp_settings = {
-:user_name => ENV['SENDGRID_USERNAME'],
-:password => ENV['SENDGRID_PASSWORD'],
-:domain => 'your_domain.com',
-:address => 'smtp.sendgrid.net',
-:port => 587,
-:authentication => :plain,
-:enable_starttls_auto => true
+  :address => 'smtp.postmarkapp.com',
+  :port => 587,
+  :domain => 'your_domain.com',
+  :user_name => ENV['POSTMARK_USERNAME'],
+  :password => ENV['POSTMARK_PASSWORD'],
+  :authentication => :plain,
+  :enable_starttls_auto => true
 }
 RUBY
 end
+
+def add_postmark_production_environment
+  <<-RUBY
+\n  config.action_mailer.delivery_method     = :postmark
+  config.action_mailer.postmark_settings   = { api_token: ENV['POSTMARK_API_TOKEN'] }
+  config.action_mailer.default_url_options = { host: "your_domain.com" }
+  RUBY
+end
+
 def add_fr_locales
 <<-YAML
 fr:
@@ -588,14 +597,19 @@ end
 # Dev environment
 ########################################
 gsub_file('config/environments/development.rb', /config\.assets\.debug.*/, 'config.assets.debug = false')
+
 file 'config/environments/staging.rb',
   add_staging_environment
+
+inject_into_file 'config/environments/production.rb', after: 'config.action_mailer.perform_caching = false' do
+  add_postmark_production_environment
+end
 
 file 'config/initializers/email_interceptor.rb',
   add_email_interceptor_initializer
 
 file 'config/initializers/smtp.rb',
-  add_sendgrid_initializer
+  add_postmark_initializer
 
 file 'config/locales/fr.yml',
   add_fr_locales
@@ -665,6 +679,8 @@ environment generators
 # AFTER BUNDLE
 ########################################
 after_bundle do
+  # Debug: Spring process need to be stopped to run rails g simple_form:install
+  run 'bin/spring stop'
   # Generators: db + simple form + pages controller
   ########################################
   rails_command 'db:drop db:create db:migrate'
@@ -804,7 +820,16 @@ RUBY
   run 'rm app/javascript/packs/application.js'
   run 'yarn add popper.js jquery bootstrap'
   file 'app/javascript/packs/application.js', <<-JS
+// External imports
 import "bootstrap";
+
+// Internal imports
+// eg : import { initSelect2 } from '../components/init_select2';
+
+document.addEventListener('turbolinks:load', () => {
+  // Call your functions here, e.g:
+  // initSelect2();
+});
   JS
 
   if Rails.version >= "6"
@@ -848,4 +873,7 @@ JS
   git :init
   git add: '.'
   git commit: "-m 'Initial commit with devise template from Mihivai'"
+
+  # Fix puma config
+  gsub_file('config/puma.rb', 'pidfile ENV.fetch("PIDFILE") { "tmp/pids/server.pid" }', '# pidfile ENV.fetch("PIDFILE") { "tmp/pids/server.pid" }')
 end
