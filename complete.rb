@@ -13,6 +13,7 @@ def add_gems
   gem 'postmark-rails'
   gem 'activeadmin'
   gem 'activeadmin_addons'
+  gem 'cookies_eu'
 
   gem 'autoprefixer-rails'
   gem 'font-awesome-sass', '~> 5.6.1'
@@ -65,6 +66,7 @@ def add_layout
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload', defer: true %>
   </head>
   <body>
+    <%= render "layouts/cookies_banner" %>
     <%= render 'shared/navbar' %>
     <%= render 'shared/flashes' %>
     <%= yield %>
@@ -113,6 +115,13 @@ def add_pages_legal
 <div class="container page-min-height">
   <h1>Pages#Legal</h1>
   <p>Find me in app/views/pages/legal.html.erb</p>
+  <div>
+    À tout moment, l’Utilisateur peut faire le choix d’exprimer et de modifier ses souhaits en matière de Cookies. <a href="yourdomain.com">yourdomain.com/</a> pourra en outre faire appel aux services de prestataires externes pour l’aider à recueillir et traiter les informations décrites dans cette section.</p>
+    	      À tout moment, l’Utilisateur peut faire le choix d’exprimer et de modifier ses souhaits en matière de Cookies en cliquant sur le lien ci-dessous. <a href="yourdomain.com/">yourdomain.com/</a> pourra en outre faire appel aux services de prestataires externes pour l’aider à recueillir et traiter les informations décrites dans cette section.</p>
+    <div class="d-flex justify-content-center mb-4">
+      <div class="btn btn-salmon text-white btn-rounded btn:focus font-size-16px cursor-pointer py-2" data-toggle="modal" data-target="#cookiesModal">PERSONNALISER LES COOKIES</div>
+    </div>
+  </div>
 </div>
 HTML
 end
@@ -542,20 +551,33 @@ file 'app/assets/stylesheets/components/_alert.scss', <<-CSS
 }
 CSS
 
-run 'curl -L https://raw.githubusercontent.com/ClaudineP435433/rails-template-mihivai-rails6/master/navbar-mihivai.scss > app/assets/stylesheets/components/_navbar.scss'
+run 'curl -L https://raw.githubusercontent.com/ClaudineP435433/rails-template-mihivai-rails6/master/banner-mihivai.scss > app/assets/stylesheets/components/_banner.scss'
 run 'curl -L https://raw.githubusercontent.com/ClaudineP435433/rails-template-mihivai-rails6/master/footer-mihivai.scss > app/assets/stylesheets/components/_footer.scss'
+run 'curl -L https://raw.githubusercontent.com/ClaudineP435433/rails-template-mihivai-rails6/master/input-mihivai.scss > app/assets/stylesheets/components/_input.scss'
+run 'curl -L https://raw.githubusercontent.com/ClaudineP435433/rails-template-mihivai-rails6/master/navbar-mihivai.scss > app/assets/stylesheets/components/_navbar.scss'
 
 file 'app/assets/stylesheets/components/_utilities.scss', <<-CSS
 .page-min-height {
   min-height: calc(100vh - 170px)
 }
+.cursor-pointer {
+  cursor: pointer;
+}
+.font-size-12px {
+    font-size: 12px;
+}
+.font-size-16px {
+    font-size: 16px;
+}
 CSS
 
 file 'app/assets/stylesheets/components/_index.scss', <<-CSS
 @import "alert";
+@import 'banner';
 @import 'footer';
 @import 'navbar';
 @import 'utilities';
+@import 'input';
 CSS
 
 file 'app/assets/stylesheets/config/_fonts.scss', <<-CSS
@@ -564,6 +586,10 @@ file 'app/assets/stylesheets/config/_fonts.scss', <<-CSS
 CSS
 
 file 'app/assets/stylesheets/config/_colors.scss', <<-CSS
+$dark-gray: #39404d;
+$light-gray: #f9f9f9;
+$salmon: #fd736d;
+$dark-transparent: rgba(50, 50, 50, 0.8);
 CSS
 
 file 'app/assets/stylesheets/config/_bootstrap_variables.scss', <<-CSS
@@ -593,6 +619,14 @@ if Rails.version < "6"
 //= require_tree .
   JS
 end
+
+
+# Cookies
+########################################
+run 'curl -L https://raw.githubusercontent.com/ClaudineP435433/rails-template-mihivai-rails6/master/check-red.svg > app/assets/images/check-red.svg'
+run 'mkdir -p app/javascript/components'
+run 'curl -L https://raw.githubusercontent.com/ClaudineP435433/rails-template-mihivai-rails6/master/cookie-mihivai.js > app/javascript/components/cookies.js'
+run 'curl -L https://raw.githubusercontent.com/ClaudineP435433/rails-template-mihivai-rails6/master/cookie-mihivai.html.erb > app/views/layouts/_cookies_banner.html.erb'
 
 # Dev environment
 ########################################
@@ -824,7 +858,7 @@ RUBY
 import "bootstrap";
 
 // Internal imports
-// eg : import { initSelect2 } from '../components/init_select2';
+import '../components/cookies'
 
 document.addEventListener('turbolinks:load', () => {
   // Call your functions here, e.g:
