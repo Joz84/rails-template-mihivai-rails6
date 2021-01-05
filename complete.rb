@@ -608,6 +608,9 @@ file 'app/assets/stylesheets/config/_bootstrap_variables.scss', <<-CSS
 CSS
 
 file 'app/assets/stylesheets/units/_button.scss', <<-CSS
+.btn.btn-rounded {
+  border-radius: 20px;
+}
 .btn-cookie {
   &:hover{
     color: white;
