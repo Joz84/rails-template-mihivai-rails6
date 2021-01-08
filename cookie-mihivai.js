@@ -1,32 +1,40 @@
-function setCookie(name, value, months) {
-  var expirationDate = new Date;
-  expirationDate.setMonth(expirationDate.getMonth() + months);
-  document.cookie = name + "=" + value + ";path=/;expires=" + expirationDate.toGMTString();
-}
 const cookiesBanner = document.getElementById("cookiesBanner");
+const cookiesGlobalConsentBtn = document.getElementById("cookiesGlobalConsent"); // "Accepter" button in cookies banner
+const cookiesConfigBtn = document.getElementById("cookiesConfigBtn"); // "Je valide" button in modal
+const googleAnalyticsBtn = document.getElementById("google_analytics_consent");
+const gaKey = googleAnalyticsBtn.dataset.analytics;
+const optOutCookieName = 'ga-disable-' + gaKey;
+
 const hideCookiesBanner = () => {
   cookiesBanner.classList.add("d-none");
 }
 const showCookiesBanner = () => {
   cookiesBanner.classList.remove("d-none");
 }
-document.getElementById("cookiesConsent").addEventListener("click", (e) => {
-  setCookie("cookies-consent", "true", 12);
+
+const setCookie = (name, value, months) => {
+  let expirationDate = new Date;
+  expirationDate.setMonth(expirationDate.getMonth() + months);
+  document.cookie = name + "=" + value + ";path=/;expires=" + expirationDate.toGMTString();
+}
+const saveCookiesPreferences = (googleAnalyticsRefused) => {
+  setCookie("cookies-preferences-given", "true", 12);
+  setCookie(optOutCookieName, `${googleAnalyticsRefused}`, 12); // Sets cookie if does not exist already
+  window[optOutCookieName] = googleAnalyticsRefused; // Updates cookie value if already exists
   hideCookiesBanner();
-})
-if (!(document.cookie.indexOf('cookies-consent=true') > -1)) {
+}
+if (!(document.cookie.indexOf('cookies-preferences-given=true') > -1)) {
   showCookiesBanner();
 }
-
-const gaKey = document.getElementById("accept_google_analytics").dataset.analytics
-const cookiesConfigBtn = document.getElementById("cookiesConfigConsent");
-var disableStr = 'ga-disable-' + gaKey;
-if (document.cookie.indexOf(disableStr + '=true') > -1) {
-  window[disableStr] = true;
-  document.getElementById("accept_google_analytics").checked = false
+if (document.cookie.indexOf(optOutCookieName + '=true') > -1) {
+  googleAnalyticsBtn.checked = false;
 }
+
+cookiesGlobalConsentBtn.addEventListener("click", (e) => {
+  googleAnalyticsBtn.checked = true;
+  saveCookiesPreferences(!googleAnalyticsBtn.checked)
+})
+
 cookiesConfigBtn.addEventListener("click", (e)=>{
-  const googleAnalyticsConsent = document.getElementById("accept_google_analytics");
-  setCookie(disableStr, `${!googleAnalyticsConsent.checked}`, 12)
-  window[disableStr] = !googleAnalyticsConsent.checked
+  saveCookiesPreferences(!googleAnalyticsBtn.checked)
 })

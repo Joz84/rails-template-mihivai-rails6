@@ -13,7 +13,6 @@ def add_gems
   gem 'postmark-rails'
   gem 'activeadmin'
   gem 'activeadmin_addons'
-  gem 'cookies_eu'
 
   gem 'autoprefixer-rails'
   gem 'font-awesome-sass', '~> 5.6.1'
@@ -119,7 +118,7 @@ def add_pages_legal
     À tout moment, l’Utilisateur peut faire le choix d’exprimer et de modifier ses souhaits en matière de Cookies. <a href="yourdomain.com">yourdomain.com/</a> pourra en outre faire appel aux services de prestataires externes pour l’aider à recueillir et traiter les informations décrites dans cette section.</p>
     	      À tout moment, l’Utilisateur peut faire le choix d’exprimer et de modifier ses souhaits en matière de Cookies en cliquant sur le lien ci-dessous. <a href="yourdomain.com/">yourdomain.com/</a> pourra en outre faire appel aux services de prestataires externes pour l’aider à recueillir et traiter les informations décrites dans cette section.</p>
     <div class="d-flex justify-content-center mb-4">
-      <div class="btn btn-cookie text-white btn-rounded btn:focus font-size-16px cursor-pointer py-2" data-toggle="modal" data-target="#cookiesModal">PERSONNALISER LES COOKIES</div>
+      <div class="btn btn-cookie text-white btn-rounded btn:focus font-size-16px py-2" data-toggle="modal" data-target="#cookiesModal">PERSONNALISER LES COOKIES</div>
     </div>
   </div>
 </div>
@@ -565,9 +564,6 @@ file 'app/assets/stylesheets/components/_utilities.scss', <<-CSS
 .page-min-height {
   min-height: calc(100vh - 170px)
 }
-.cursor-pointer {
-  cursor: pointer;
-}
 .font-size-12px {
   font-size: 12px;
 }
@@ -597,8 +593,8 @@ file 'app/assets/stylesheets/config/_fonts.scss', <<-CSS
 CSS
 
 file 'app/assets/stylesheets/config/_colors.scss', <<-CSS
-# color dedicated to cookies (nav/buttons/text) - "blue" should be replace by your theme color
-$cookie: blue
+// color dedicated to cookies (nav/buttons/text) - "blue" should be replace by your theme color
+$cookie: blue;
 $dark-gray: #39404d;
 $light-gray: #f9f9f9;
 $dark-transparent: rgba(50, 50, 50, 0.8);
@@ -608,6 +604,9 @@ file 'app/assets/stylesheets/config/_bootstrap_variables.scss', <<-CSS
 CSS
 
 file 'app/assets/stylesheets/units/_button.scss', <<-CSS
+.btn {
+  cursor: pointer;
+}
 .btn.btn-rounded {
   border-radius: 20px;
 }
@@ -666,6 +665,7 @@ run 'curl -L https://raw.githubusercontent.com/ClaudineP435433/rails-template-mi
 run 'mkdir -p app/javascript/components'
 run 'curl -L https://raw.githubusercontent.com/ClaudineP435433/rails-template-mihivai-rails6/master/cookie-mihivai.js > app/javascript/components/cookies.js'
 run 'curl -L https://raw.githubusercontent.com/ClaudineP435433/rails-template-mihivai-rails6/master/cookie-mihivai.html.erb > app/views/layouts/_cookies_banner.html.erb'
+
 
 # Dev environment
 ########################################
