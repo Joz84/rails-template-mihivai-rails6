@@ -576,7 +576,7 @@ file 'app/assets/stylesheets/components/_utilities.scss', <<-CSS
 .text-cookie {
   color: $cookie;
   &:hover{
-    text-decoratço
+    text-decoration: none;
     color: darken($cookie, 35%);
   }
 }
