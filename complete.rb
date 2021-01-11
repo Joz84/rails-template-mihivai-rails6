@@ -552,10 +552,10 @@ file 'app/assets/stylesheets/components/_alert.scss', <<-CSS
 }
 CSS
 
-run 'curl -L https://raw.githubusercontent.com/ClaudineP435433/rails-template-mihivai-rails6/add_coockies/banner-mihivai.scss > app/assets/stylesheets/components/_banner.scss'
-run 'curl -L https://raw.githubusercontent.com/ClaudineP435433/rails-template-mihivai-rails6/add_coockies/footer-mihivai.scss > app/assets/stylesheets/components/_footer.scss'
-run 'curl -L https://raw.githubusercontent.com/ClaudineP435433/rails-template-mihivai-rails6/add_coockies/input-mihivai.scss > app/assets/stylesheets/components/_input.scss'
-run 'curl -L https://raw.githubusercontent.com/ClaudineP435433/rails-template-mihivai-rails6/add_coockies/navbar-mihivai.scss > app/assets/stylesheets/components/_navbar.scss'
+run 'curl -L https://raw.githubusercontent.com/ClaudineP435433/rails-template-mihivai-rails6/master/banner-mihivai.scss > app/assets/stylesheets/components/_banner.scss'
+run 'curl -L https://raw.githubusercontent.com/ClaudineP435433/rails-template-mihivai-rails6/master/footer-mihivai.scss > app/assets/stylesheets/components/_footer.scss'
+run 'curl -L https://raw.githubusercontent.com/ClaudineP435433/rails-template-mihivai-rails6/master/input-mihivai.scss > app/assets/stylesheets/components/_input.scss'
+run 'curl -L https://raw.githubusercontent.com/ClaudineP435433/rails-template-mihivai-rails6/master/navbar-mihivai.scss > app/assets/stylesheets/components/_navbar.scss'
 
 file 'app/assets/stylesheets/components/_utilities.scss', <<-CSS
 .font-montserrat {
@@ -668,10 +668,10 @@ end
 
 # Cookies
 ########################################
-run 'curl -L https://raw.githubusercontent.com/ClaudineP435433/rails-template-mihivai-rails6/add_coockies/check.svg > app/assets/images/check.svg'
+run 'curl -L https://raw.githubusercontent.com/ClaudineP435433/rails-template-mihivai-rails6/master/check.svg > app/assets/images/check.svg'
 run 'mkdir -p app/javascript/components'
-run 'curl -L https://raw.githubusercontent.com/ClaudineP435433/rails-template-mihivai-rails6/add_coockies/cookie-mihivai.js > app/javascript/components/cookies.js'
-run 'curl -L https://raw.githubusercontent.com/ClaudineP435433/rails-template-mihivai-rails6/add_coockies/cookie-mihivai.html.erb > app/views/layouts/_cookies_banner.html.erb'
+run 'curl -L https://raw.githubusercontent.com/ClaudineP435433/rails-template-mihivai-rails6/master/cookie-mihivai.js > app/javascript/components/cookies.js'
+run 'curl -L https://raw.githubusercontent.com/ClaudineP435433/rails-template-mihivai-rails6/master/cookie-mihivai.html.erb > app/views/layouts/_cookies_banner.html.erb'
 
 
 # Dev environment
@@ -732,8 +732,8 @@ file 'app/views/shared/_flashes.html.erb',
 # run 'curl -L https://github.com/lewagon/awesome-navbars/raw/master/templates/_navbar_wagon.html.erb > app/views/shared/_navbar.html.erb'
 # run 'curl -L https://raw.githubusercontent.com/lewagon/rails-templates/master/logo.png > app/assets/images/logo.png'
 
-run 'curl -L https://raw.githubusercontent.com/ClaudineP435433/rails-template-mihivai-rails6/add_coockies/logo.png > app/assets/images/logo.png'
-run 'curl -L https://raw.githubusercontent.com/ClaudineP435433/rails-template-mihivai-rails6/add_coockies/logo.png > public/logo.png'
+run 'curl -L https://raw.githubusercontent.com/ClaudineP435433/rails-template-mihivai-rails6/master/logo.png > app/assets/images/logo.png'
+run 'curl -L https://raw.githubusercontent.com/ClaudineP435433/rails-template-mihivai-rails6/master/logo.png > public/logo.png'
 
 
 # README
