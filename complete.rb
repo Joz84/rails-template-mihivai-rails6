@@ -597,6 +597,7 @@ CSS
 file 'app/assets/stylesheets/config/_fonts.scss', <<-CSS
 // Import Google fonts
 @import url("https://fonts.googleapis.com/css?family=Open+Sans:400,300,700|Raleway:400,100,300,700,500");
+@import url('https://fonts.googleapis.com/css?family=Montserrat:400,,500,600&display=swap');
 CSS
 
 file 'app/assets/stylesheets/config/_colors.scss', <<-CSS
