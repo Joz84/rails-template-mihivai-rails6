@@ -118,7 +118,7 @@ def add_pages_legal
     À tout moment, l’Utilisateur peut faire le choix d’exprimer et de modifier ses souhaits en matière de Cookies. <a href="yourdomain.com">yourdomain.com/</a> pourra en outre faire appel aux services de prestataires externes pour l’aider à recueillir et traiter les informations décrites dans cette section.</p>
     	      À tout moment, l’Utilisateur peut faire le choix d’exprimer et de modifier ses souhaits en matière de Cookies en cliquant sur le lien ci-dessous. <a href="yourdomain.com/">yourdomain.com/</a> pourra en outre faire appel aux services de prestataires externes pour l’aider à recueillir et traiter les informations décrites dans cette section.</p>
     <div class="d-flex justify-content-center mb-4">
-      <div class="btn btn-cookie text-white btn-rounded btn:focus font-size-16px py-2" data-toggle="modal" data-target="#cookiesModal">PERSONNALISER LES COOKIES</div>
+      <div class="btn btn-cookie font-size-16px py-2" data-toggle="modal" data-target="#cookiesModal">PERSONNALISER LES COOKIES</div>
     </div>
   </div>
 </div>
@@ -552,10 +552,10 @@ file 'app/assets/stylesheets/components/_alert.scss', <<-CSS
 }
 CSS
 
-run 'curl -L https://raw.githubusercontent.com/ClaudineP435433/rails-template-mihivai-rails6/master/banner-mihivai.scss > app/assets/stylesheets/components/_banner.scss'
-run 'curl -L https://raw.githubusercontent.com/ClaudineP435433/rails-template-mihivai-rails6/master/footer-mihivai.scss > app/assets/stylesheets/components/_footer.scss'
-run 'curl -L https://raw.githubusercontent.com/ClaudineP435433/rails-template-mihivai-rails6/master/input-mihivai.scss > app/assets/stylesheets/components/_input.scss'
-run 'curl -L https://raw.githubusercontent.com/ClaudineP435433/rails-template-mihivai-rails6/master/navbar-mihivai.scss > app/assets/stylesheets/components/_navbar.scss'
+run 'curl -L https://raw.githubusercontent.com/ClaudineP435433/rails-template-mihivai-rails6/add_coockies/banner-mihivai.scss > app/assets/stylesheets/components/_banner.scss'
+run 'curl -L https://raw.githubusercontent.com/ClaudineP435433/rails-template-mihivai-rails6/add_coockies/footer-mihivai.scss > app/assets/stylesheets/components/_footer.scss'
+run 'curl -L https://raw.githubusercontent.com/ClaudineP435433/rails-template-mihivai-rails6/add_coockies/input-mihivai.scss > app/assets/stylesheets/components/_input.scss'
+run 'curl -L https://raw.githubusercontent.com/ClaudineP435433/rails-template-mihivai-rails6/add_coockies/navbar-mihivai.scss > app/assets/stylesheets/components/_navbar.scss'
 
 file 'app/assets/stylesheets/components/_utilities.scss', <<-CSS
 .font-montserrat {
@@ -576,7 +576,7 @@ file 'app/assets/stylesheets/components/_utilities.scss', <<-CSS
 .text-cookie {
   color: $cookie;
   &:hover{
-    text-decoratço
+    text-decoration: none;
     color: darken($cookie, 35%);
   }
 }
@@ -620,7 +620,7 @@ file 'app/assets/stylesheets/units/_button.scss', <<-CSS
   border-radius: 20px;
 }
 .btn-cookie {
-  color: white;
+  color: $primary;
   background-color: $cookie;
   padding: 0.375rem 0.75rem;
   line-height: 1.5;
@@ -668,10 +668,10 @@ end
 
 # Cookies
 ########################################
-run 'curl -L https://raw.githubusercontent.com/ClaudineP435433/rails-template-mihivai-rails6/master/check.svg > app/assets/images/check.svg'
+run 'curl -L https://raw.githubusercontent.com/ClaudineP435433/rails-template-mihivai-rails6/add_coockies/check.svg > app/assets/images/check.svg'
 run 'mkdir -p app/javascript/components'
-run 'curl -L https://raw.githubusercontent.com/ClaudineP435433/rails-template-mihivai-rails6/master/cookie-mihivai.js > app/javascript/components/cookies.js'
-run 'curl -L https://raw.githubusercontent.com/ClaudineP435433/rails-template-mihivai-rails6/master/cookie-mihivai.html.erb > app/views/layouts/_cookies_banner.html.erb'
+run 'curl -L https://raw.githubusercontent.com/ClaudineP435433/rails-template-mihivai-rails6/add_coockies/cookie-mihivai.js > app/javascript/components/cookies.js'
+run 'curl -L https://raw.githubusercontent.com/ClaudineP435433/rails-template-mihivai-rails6/add_coockies/cookie-mihivai.html.erb > app/views/layouts/_cookies_banner.html.erb'
 
 
 # Dev environment
@@ -732,8 +732,8 @@ file 'app/views/shared/_flashes.html.erb',
 # run 'curl -L https://github.com/lewagon/awesome-navbars/raw/master/templates/_navbar_wagon.html.erb > app/views/shared/_navbar.html.erb'
 # run 'curl -L https://raw.githubusercontent.com/lewagon/rails-templates/master/logo.png > app/assets/images/logo.png'
 
-run 'curl -L https://raw.githubusercontent.com/ClaudineP435433/rails-template-mihivai-rails6/master/logo.png > app/assets/images/logo.png'
-run 'curl -L https://raw.githubusercontent.com/ClaudineP435433/rails-template-mihivai-rails6/master/logo.png > public/logo.png'
+run 'curl -L https://raw.githubusercontent.com/ClaudineP435433/rails-template-mihivai-rails6/add_coockies/logo.png > app/assets/images/logo.png'
+run 'curl -L https://raw.githubusercontent.com/ClaudineP435433/rails-template-mihivai-rails6/add_coockies/logo.png > public/logo.png'
 
 
 # README
