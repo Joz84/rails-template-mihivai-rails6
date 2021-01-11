@@ -138,7 +138,7 @@ def update_error_page(var)
         background-color: white;
         color: #2E2F30;
         text-align: center;
-        font-family: arial, sans-serif;
+        font-family: "Montserrat", sans-serif;
         margin: 20px;
       }
 
@@ -558,6 +558,9 @@ run 'curl -L https://raw.githubusercontent.com/ClaudineP435433/rails-template-mi
 run 'curl -L https://raw.githubusercontent.com/ClaudineP435433/rails-template-mihivai-rails6/master/navbar-mihivai.scss > app/assets/stylesheets/components/_navbar.scss'
 
 file 'app/assets/stylesheets/components/_utilities.scss', <<-CSS
+.font-montserrat {
+  font-family: "Montserrat", sans-serif;
+}
 .max-width-650px {
   max-width: 650px;
 }
@@ -572,6 +575,10 @@ file 'app/assets/stylesheets/components/_utilities.scss', <<-CSS
 }
 .text-cookie {
   color: $cookie;
+  &:hover{
+    text-decoratço
+    color: darken($cookie, 35%);
+  }
 }
 .border-cookie {
   border-color: $cookie;
@@ -593,11 +600,12 @@ file 'app/assets/stylesheets/config/_fonts.scss', <<-CSS
 CSS
 
 file 'app/assets/stylesheets/config/_colors.scss', <<-CSS
-// color dedicated to cookies (nav/buttons/text) - "blue" should be replace by your theme color
-$cookie: blue;
+$blue-light: #7ee6e5;
 $dark-gray: #39404d;
 $light-gray: #f9f9f9;
 $dark-transparent: rgba(50, 50, 50, 0.8);
+// color dedicated to cookies (nav/buttons/text) - "blue" should be replace by your theme color
+$cookie: $blue-light;
 CSS
 
 file 'app/assets/stylesheets/config/_bootstrap_variables.scss', <<-CSS
@@ -611,23 +619,21 @@ file 'app/assets/stylesheets/units/_button.scss', <<-CSS
   border-radius: 20px;
 }
 .btn-cookie {
-  &:hover{
+  color: white;
+  background-color: $cookie;
+  padding: 0.375rem 0.75rem;
+  line-height: 1.5;
+  font-weight: 600;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  transition: all 0.15s ease-in-out;
+  &:hover {
     color: white;
-    background-color: $cookie;
-    padding: 0.25rem 1.5rem;
-    margin: 8px 0;
-    line-height: 1.5;
-    border-radius: 20px;
-    border: 1px solid transparent;
-    transition: all 0.15s ease-in-out;
-    &:hover {
-      text-decoration: none;
-      background-color: darken($cookie, 5%);
-    }
+    text-decoration: none;
+    background-color: darken($cookie, 35%);
   }
 }
 CSS
-
 file 'app/assets/stylesheets/units/_index.scss', <<-CSS
 @import "button";
 CSS
@@ -661,7 +667,7 @@ end
 
 # Cookies
 ########################################
-run 'curl -L https://raw.githubusercontent.com/ClaudineP435433/rails-template-mihivai-rails6/master/check-red.svg > app/assets/images/check-red.svg'
+run 'curl -L https://raw.githubusercontent.com/ClaudineP435433/rails-template-mihivai-rails6/master/check.svg > app/assets/images/check.svg'
 run 'mkdir -p app/javascript/components'
 run 'curl -L https://raw.githubusercontent.com/ClaudineP435433/rails-template-mihivai-rails6/master/cookie-mihivai.js > app/javascript/components/cookies.js'
 run 'curl -L https://raw.githubusercontent.com/ClaudineP435433/rails-template-mihivai-rails6/master/cookie-mihivai.html.erb > app/views/layouts/_cookies_banner.html.erb'

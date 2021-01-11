@@ -23,11 +23,10 @@ const saveCookiesPreferences = (googleAnalyticsRefused) => {
   window[optOutCookieName] = googleAnalyticsRefused; // Updates cookie value if already exists
   hideCookiesBanner();
 }
-if (!(document.cookie.indexOf('cookies-preferences-given=true') > -1)) {
+if (document.cookie.indexOf('cookies-preferences-given=true') == -1) {
   showCookiesBanner();
-}
-if (document.cookie.indexOf(optOutCookieName + '=true') > -1) {
-  googleAnalyticsBtn.checked = false;
+} else {
+  googleAnalyticsBtn.checked = (document.cookie.indexOf(optOutCookieName + '=false') != -1);
 }
 
 cookiesGlobalConsentBtn.addEventListener("click", (e) => {
