@@ -1,36 +1,38 @@
 def add_gems
   <<-RUBY
   source 'https://rubygems.org'
-  ruby '#{RUBY_VERSION}'
+  # ruby '#{RUBY_VERSION}'
+  ruby '>= 2.7'
 
   #{"gem 'bootsnap', require: false" if Rails.version >= "5.2"}
   gem 'devise'
-  gem 'jbuilder', '~> 2.0'
-  gem 'pg', '~> 0.21'
-  gem 'puma'
-  gem 'rails', '#{Rails.version}'
-  gem 'redis'
+  gem 'jbuilder', '~> 2.7'
+  gem 'pg', '~> 1.1'
+  gem 'puma', '~> 5.0'
+  # gem 'rails', '#{Rails.version}'
+  gem 'rails', '~> 6.1.3'
+  gem 'redis', '~> 4.0'
   gem 'postmark-rails'
   gem 'activeadmin'
   gem 'activeadmin_addons'
 
   gem 'autoprefixer-rails'
-  gem 'font-awesome-sass', '~> 5.6.1'
-  gem 'sassc-rails'
+  gem 'font-awesome-sass', '~> 5.15.1'
+  gem 'sass-rails', '>= 6' # sass-rails 6 wraps sassc-rails gem under the hood
   gem 'simple_form'
-  gem 'uglifier'
-  gem 'webpacker'
+  gem 'uglifier' # Only works with ES5. If you need to compress ES6, ruby-terser is a better option.
+  gem 'webpacker', '~> 5.0'
   gem 'slim'
 
   group :development do
     gem 'rails-erd'
-    gem 'web-console', '>= 3.3.0'
+    gem 'web-console', '>= 4.1.0'
   end
 
   group :development, :test do
     gem 'pry-byebug'
     gem 'pry-rails'
-    gem 'listen', '~> 3.0.5'
+    gem 'listen', '~> 3.3'
     gem 'spring'
     gem 'spring-watcher-listen', '~> 2.0.0'
     gem 'dotenv-rails'
@@ -65,6 +67,7 @@ def add_layout
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload', defer: true %>
   </head>
   <body>
+    <%= render "layouts/cookies_banner" %>
     <%= render 'shared/navbar' %>
     <%= render 'shared/flashes' %>
     <%= yield %>
@@ -113,6 +116,13 @@ def add_pages_legal
 <div class="container page-min-height">
   <h1>Pages#Legal</h1>
   <p>Find me in app/views/pages/legal.html.erb</p>
+  <div>
+    À tout moment, l’Utilisateur peut faire le choix d’exprimer et de modifier ses souhaits en matière de Cookies. <a href="yourdomain.com">yourdomain.com/</a> pourra en outre faire appel aux services de prestataires externes pour l’aider à recueillir et traiter les informations décrites dans cette section.</p>
+    	      À tout moment, l’Utilisateur peut faire le choix d’exprimer et de modifier ses souhaits en matière de Cookies en cliquant sur le lien ci-dessous. <a href="yourdomain.com/">yourdomain.com/</a> pourra en outre faire appel aux services de prestataires externes pour l’aider à recueillir et traiter les informations décrites dans cette section.</p>
+    <div class="d-flex justify-content-center mb-4">
+      <div class="btn btn-cookie font-size-16px py-2" data-toggle="modal" data-target="#cookiesModal">PERSONNALISER LES COOKIES</div>
+    </div>
+  </div>
 </div>
 HTML
 end
@@ -130,7 +140,7 @@ def update_error_page(var)
         background-color: white;
         color: #2E2F30;
         text-align: center;
-        font-family: arial, sans-serif;
+        font-family: "Montserrat", sans-serif;
         margin: 20px;
       }
 
@@ -544,31 +554,91 @@ file 'app/assets/stylesheets/components/_alert.scss', <<-CSS
 }
 CSS
 
-run 'curl -L https://raw.githubusercontent.com/ClaudineP435433/rails-template-mihivai-rails6/master/navbar-mihivai.scss > app/assets/stylesheets/components/_navbar.scss'
+run 'curl -L https://raw.githubusercontent.com/ClaudineP435433/rails-template-mihivai-rails6/master/banner-mihivai.scss > app/assets/stylesheets/components/_banner.scss'
 run 'curl -L https://raw.githubusercontent.com/ClaudineP435433/rails-template-mihivai-rails6/master/footer-mihivai.scss > app/assets/stylesheets/components/_footer.scss'
+run 'curl -L https://raw.githubusercontent.com/ClaudineP435433/rails-template-mihivai-rails6/master/input-mihivai.scss > app/assets/stylesheets/components/_input.scss'
+run 'curl -L https://raw.githubusercontent.com/ClaudineP435433/rails-template-mihivai-rails6/master/navbar-mihivai.scss > app/assets/stylesheets/components/_navbar.scss'
 
 file 'app/assets/stylesheets/components/_utilities.scss', <<-CSS
+.font-montserrat {
+  font-family: "Montserrat", sans-serif;
+}
+.max-width-650px {
+  max-width: 650px;
+}
 .page-min-height {
   min-height: calc(100vh - 170px)
+}
+.font-size-12px {
+  font-size: 12px;
+}
+.font-size-16px {
+  font-size: 16px;
+}
+.text-cookie {
+  color: $cookie;
+  &:hover{
+    text-decoration: none;
+    color: darken($cookie, 35%);
+  }
+}
+.border-cookie {
+  border-color: $cookie;
 }
 CSS
 
 file 'app/assets/stylesheets/components/_index.scss', <<-CSS
 @import "alert";
+@import 'banner';
 @import 'footer';
 @import 'navbar';
 @import 'utilities';
+@import 'input';
 CSS
 
 file 'app/assets/stylesheets/config/_fonts.scss', <<-CSS
 // Import Google fonts
 @import url("https://fonts.googleapis.com/css?family=Open+Sans:400,300,700|Raleway:400,100,300,700,500");
+@import url('https://fonts.googleapis.com/css?family=Montserrat:400,,500,600&display=swap');
 CSS
 
 file 'app/assets/stylesheets/config/_colors.scss', <<-CSS
+$blue-light: #7ee6e5;
+$dark-gray: #39404d;
+$light-gray: #f9f9f9;
+$dark-transparent: rgba(50, 50, 50, 0.8);
+// color dedicated to cookies (nav/buttons/text) - "blue" should be replace by your theme color
+$cookie: $blue-light;
 CSS
 
 file 'app/assets/stylesheets/config/_bootstrap_variables.scss', <<-CSS
+CSS
+
+file 'app/assets/stylesheets/units/_button.scss', <<-CSS
+.btn {
+  cursor: pointer;
+}
+.btn.btn-rounded {
+  border-radius: 20px;
+}
+.btn-cookie {
+  color: $primary;
+  background-color: $cookie;
+  padding: 0.375rem 0.75rem;
+  line-height: 1.5;
+  font-weight: 600;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  transition: all 0.15s ease-in-out;
+  &:hover {
+    color: white;
+    text-decoration: none;
+    background-color: darken($cookie, 35%);
+  }
+}
+CSS
+file 'app/assets/stylesheets/units/_index.scss', <<-CSS
+@import "button";
 CSS
 
 file 'app/assets/stylesheets/application.scss', <<-JS
@@ -585,6 +655,7 @@ file 'app/assets/stylesheets/application.scss', <<-JS
 // Your CSS partials
 @import "layouts/index";
 @import "components/index";
+@import "units/index";
 //@import "pages/index";
 JS
 
@@ -595,6 +666,15 @@ if Rails.version < "6"
 //= require_tree .
   JS
 end
+
+
+# Cookies
+########################################
+run 'curl -L https://raw.githubusercontent.com/ClaudineP435433/rails-template-mihivai-rails6/master/check.svg > app/assets/images/check.svg'
+run 'mkdir -p app/javascript/components'
+run 'curl -L https://raw.githubusercontent.com/ClaudineP435433/rails-template-mihivai-rails6/master/cookie-mihivai.js > app/javascript/components/cookies.js'
+run 'curl -L https://raw.githubusercontent.com/ClaudineP435433/rails-template-mihivai-rails6/master/cookie-mihivai.html.erb > app/views/layouts/_cookies_banner.html.erb'
+
 
 # Dev environment
 ########################################
@@ -826,7 +906,7 @@ RUBY
 import "bootstrap";
 
 // Internal imports
-// eg : import { initSelect2 } from '../components/init_select2';
+import '../components/cookies'
 
 document.addEventListener('turbolinks:load', () => {
   // Call your functions here, e.g:
