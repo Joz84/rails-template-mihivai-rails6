@@ -66,6 +66,8 @@ def add_layout
     <%#= stylesheet_pack_tag 'application', media: 'all' %> <!-- Uncomment if you import CSS in app/javascript/packs/application.js -->
     #{"    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload', defer: true %>\n" if Rails.version < "6"}
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload', defer: true %>
+    <!-- 	prevent Chrome animation on loading -->
+    <script type="text/javascript"> </script>
   </head>
   <body>
     <%= render "layouts/cookies_banner" %>
