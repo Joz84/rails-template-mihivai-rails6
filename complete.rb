@@ -125,6 +125,28 @@ def add_pages_legal
 HTML
 end
 
+def update_error_with_controller
+  <<-HTML
+  <div class="container text-center">
+      <h1>
+        Page d'erreur
+      </h1>
+      <p>
+        Une erreur est survenue. <br> Veuillez nous excuser pour la gêne occasionée.
+      </p>
+       <p>
+        N'hésitez pas à retourner sur la page précédente et à réessayer.
+      </p>
+      <p>
+        <a class="link_mail_to" href="mailto:contact@mihivai.com">Reporter le probléme</a>
+      </p>
+    </div>
+    <div class="container">
+      <a class="button-green" href="/">Retour sur le site</a>
+    </div>
+  HTML
+end
+
 def update_error_page(var)
 <<-HTML
 <!DOCTYPE html>
@@ -190,7 +212,7 @@ def update_error_page(var)
           Page d'erreur
         </h1>
         <p>
-          Une erreur est revenue. <br> Veuillez nous excuser pour la gêne occasionée.
+          Une erreur est survenue. <br> Veuillez nous excuser pour la gêne occasionée.
         </p>
          <p>
           N'hésitez pas à retourner sur la page précédente et à réessayer.
@@ -496,10 +518,24 @@ RUBY
 end
 def add_active_admin_method
 <<-RUBY
-def authenticate_admin!
-  redirect_to new_user_session_path unless current_user && current_user.admin
-end
+  def authenticate_admin!
+    redirect_to new_user_session_path unless current_user && current_user.admin
+  end
 RUBY
+end
+def add_errors_controller
+  <<-RUBY
+   class ErrorsController < ApplicationController
+      skip_before_action :authenticate_user!
+      def not_found
+        render status: 404
+      end
+
+      def internal_server_error
+        render status: 500
+      end
+    end
+  RUBY
 end
 def add_seed
 <<-RUBY
@@ -940,23 +976,12 @@ environment.plugins.prepend('Provide',
 
 JS
   end
-  generate(:controller, 'errors not_found internal_server_error')
+
+  file('app/controllers/errors_controller.rb',  add_errors_controller)
+  file('app/views/errors/not_found.html',   update_error_with_controller)
+  file('app/views/errors/internal_server_error.html',   update_error_with_controller)
   route "match '/404', to: 'errors#not_found', via: :all"
   route "match '/500', to: 'errors#internal_server_error', via: :all"
-
-
-  gsub_file('app/controllers/errors_controller.rb', /.*/, <<-'RUBY'
-     class ErrorsController < ApplicationController
-        skip_before_action :authenticate_user!
-        def not_found
-          render status: 404
-        end
-
-        def internal_server_error
-          render status: 500
-        end
-      end
-    RUBY)
 
   # Dotenv
   ########################################
