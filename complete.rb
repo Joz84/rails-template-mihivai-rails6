@@ -945,8 +945,7 @@ JS
   route "match '/500', to: 'errors#internal_server_error', via: :all"
 
 
-  gsub_file 'app/controllers/errors_controller.rb',  /#\s*(filter_parameter_logging :password)/,
-    <<-'RUBY'
+  gsub_file('app/controllers/errors_controller.rb', /.*/, <<-'RUBY'
      class ErrorsController < ApplicationController
         skip_before_action :authenticate_user!
         def not_found
@@ -957,7 +956,7 @@ JS
           render status: 500
         end
       end
-    RUBY
+    RUBY)
 
   # Dotenv
   ########################################
