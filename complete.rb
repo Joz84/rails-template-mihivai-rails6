@@ -940,20 +940,22 @@ environment.plugins.prepend('Provide',
 
 JS
   end
-
+  generate(:controller, 'errors not_found internal_server_error')
   route "match '/404', to: 'errors#not_found', via: :all"
   route "match '/500', to: 'errors#internal_server_error', via: :all"
 
-  generate(:controller, 'errors not_found internal_server_error')
-  inject_into_file 'app/controllers/errors_controller.rb', after: 'class ErrorsController < ApplicationController' do
-    <<-'RUBY'
-      skip_before_action :authenticate_user!
-      def not_found
-        render status: 404
-      end
 
-      def internal_server_error
-        render status: 500
+  gsub_file 'app/controllers/errors_controller.rb',  /#\s*(filter_parameter_logging :password)/,
+    <<-'RUBY'
+     class ErrorsController < ApplicationController
+        skip_before_action :authenticate_user!
+        def not_found
+          render status: 404
+        end
+
+        def internal_server_error
+          render status: 500
+        end
       end
     RUBY
   end
