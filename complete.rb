@@ -941,12 +941,8 @@ environment.plugins.prepend('Provide',
 JS
   end
 
-  inject_into_file 'config/routes.rb', after: "root to: 'pages#home'" do
-    <<-'RUBY'
-      match "/404", to: "errors#not_found", via: :all
-      match "/500", to: "errors#internal_server_error", via: :all
-    RUBY
-  end
+  route "match '/404', to: 'errors#not_found', via: :all"
+  route "match '/500', to: 'errors#internal_server_error', via: :all"
 
   generate(:controller, 'errors not_found internal_server_error')
   inject_into_file 'app/controllers/errors_controller.rb', after: 'class ErrorsController < ApplicationController' do
