@@ -128,7 +128,7 @@ end
 
 def update_error_with_controller
   <<-HTML
-  <div class="container text-center">
+  <div class="container text-center page-min-height py-5">
       <h1>
         Page d'erreur
       </h1>
@@ -979,8 +979,8 @@ JS
   end
 
   file('app/controllers/errors_controller.rb',  add_errors_controller)
-  file('app/views/errors/not_found.html',   update_error_with_controller)
-  file('app/views/errors/internal_server_error.html',   update_error_with_controller)
+  file('app/views/errors/not_found.html.erb',   update_error_with_controller)
+  file('app/views/errors/internal_server_error.html.erb',   update_error_with_controller)
   route "match '/404', to: 'errors#not_found', via: :all"
   route "match '/500', to: 'errors#internal_server_error', via: :all"
 
