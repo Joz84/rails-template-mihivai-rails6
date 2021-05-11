@@ -746,11 +746,12 @@ file 'README.md', markdown_file_content, force: true
 # Generators
 ########################################
 generators = <<-RUBY
-config.generators do |generate|
+  config.generators do |generate|
       generate.assets false
       generate.helper false
       generate.test_framework  :test_unit, fixture: false
     end
+    config.exceptions_app = self.routes
 RUBY
 
 environment generators
@@ -776,7 +777,7 @@ after_bundle do
   gsub_file('config/initializers/active_admin.rb', 'config.current_user_method = :current_admin_user', 'config.current_user_method = :current_user')
 
   #Seed
-  file 'db/seed.rb',
+  file 'db/seeds.rb',
   add_seed
   # Routes
   ########################################
@@ -833,16 +834,16 @@ RUBY
   ########################################
   run 'rm app/controllers/pages_controller.rb'
   file 'app/controllers/pages_controller.rb', <<-RUBY
-class PagesController < ApplicationController
-  skip_before_action :authenticate_user!, only: [:home, :legal]
+    class PagesController < ApplicationController
+      skip_before_action :authenticate_user!, only: [:home, :legal]
 
-  def home
-  end
+      def home
+      end
 
-  def legal
-  end
-end
-RUBY
+      def legal
+      end
+    end
+  RUBY
 
 file 'app/views/pages/legal.html.erb',
   add_pages_legal
@@ -938,6 +939,23 @@ environment.plugins.prepend('Provide',
 )
 
 JS
+  end
+  inject_into_file "config/routes.rb", after: "root to: 'pages#home'" do <<-'RUBY'
+    match "/404", to: "errors#not_found", via: :all
+    match "/500", to: "errors#internal_server_error", via: :all
+  RUBY
+
+  generate('controller errors not_found internal_server_error')
+  inject_into_file 'app/controllers/errors_controller.rb', after: "class ErrorsController < ApplicationController" do <<-'RUBY'
+      skip_before_action :authenticate_user!
+      def not_found
+        render status: 404
+      end
+
+      def internal_server_error
+        render status: 500
+      end
+    RUBY
   end
 
   # Dotenv
