@@ -10,6 +10,7 @@ def add_gems
   gem 'puma'
   gem 'rails', '#{Rails.version}'
   gem 'redis'
+  gem "execjs", '~> 2.7.0'
   gem 'postmark-rails'
   gem 'activeadmin'
   gem 'activeadmin_addons'
