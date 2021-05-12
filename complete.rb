@@ -14,6 +14,7 @@ def add_gems
   gem 'postmark-rails'
   gem 'activeadmin'
   gem 'activeadmin_addons'
+  gem 'draper'
 
   gem 'autoprefixer-rails'
   gem 'font-awesome-sass', '~> 5.6.1'
@@ -710,7 +711,6 @@ run 'mkdir -p app/javascript/components'
 run 'curl -L https://raw.githubusercontent.com/ClaudineP435433/rails-template-mihivai-rails6/master/cookie-mihivai.js > app/javascript/components/cookies.js'
 run 'curl -L https://raw.githubusercontent.com/ClaudineP435433/rails-template-mihivai-rails6/master/cookie-mihivai.html.erb > app/views/layouts/_cookies_banner.html.erb'
 
-
 # Dev environment
 ########################################
 gsub_file('config/environments/development.rb', /config\.assets\.debug.*/, 'config.assets.debug = false')
@@ -809,6 +809,7 @@ after_bundle do
   generate('migration', 'AddAdminToUsers admin:boolean')
   generate("active_admin:install")
   generate("activeadmin_addons:install")
+  generate("draper:install")
   append_file 'config/initializers/active_admin.rb', add_active_admin_method
   gsub_file('config/initializers/active_admin.rb', 'config.authentication_method = :authenticate_admin_user!', 'config.authentication_method = :authenticate_admin!')
   gsub_file('config/initializers/active_admin.rb', 'config.current_user_method = :current_admin_user', 'config.current_user_method = :current_user')
@@ -904,6 +905,19 @@ file 'config/initializers/default_meta.rb', <<-RUBY
 DEFAULT_META = YAML.load_file(Rails.root.join("config/meta.yml"))
 RUBY
 
+run 'app/helpers/meta_tags_helper.rb'
+file 'app/helpers/application_helper.rb', <<-RUBY
+module ApplicationHelper
+  def svg_tag(name)
+    file_path = "#{Rails.root}/app/assets/images/#{name}.svg"
+    if File.exists?(file_path)
+      File.read(file_path).html_safe
+    else
+      '(not found)'
+    end
+  end
+end
+RUBY
 
 file 'app/helpers/meta_tags_helper.rb', <<-RUBY
 module MetaTagsHelper
@@ -926,6 +940,22 @@ module MetaTagsHelper
   # end
 end
 RUBY
+# Add rake task for seed
+run 'mkdir db/seeds'
+file 'lib/tasks/custom_seed.rake', <<-RUBY
+namespace :db do
+  namespace :seed do
+    Dir[Rails.root.join('db', 'seeds', '*.rb')].each do |filename|
+      task_name = File.basename(filename, '.rb')
+      desc "Seed " + task_name + ", based on the file with the same name in `db/seeds/*.rb`"
+      task task_name.to_sym => :environment do
+        load(filename) if File.exist?(filename)
+      end
+    end
+  end
+end
+RUBY
+
 
   # Environments
   ########################################
@@ -978,7 +1008,7 @@ environment.plugins.prepend('Provide',
 
 JS
   end
-
+  # error_with-controller
   file('app/controllers/errors_controller.rb',  add_errors_controller)
   file('app/views/errors/not_found.html.erb',   update_error_with_controller)
   file('app/views/errors/internal_server_error.html.erb',   update_error_with_controller)
