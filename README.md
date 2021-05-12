@@ -47,3 +47,6 @@ rails new \
 - Active Admin
 - Postmark
 - Email interceptor
+- Draper
+- Seed avec Rake Task
+- Erreurs avec controller
