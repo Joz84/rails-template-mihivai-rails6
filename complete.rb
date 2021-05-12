@@ -905,7 +905,7 @@ file 'config/initializers/default_meta.rb', <<-RUBY
 DEFAULT_META = YAML.load_file(Rails.root.join("config/meta.yml"))
 RUBY
 
-run 'app/helpers/meta_tags_helper.rb'
+run 'rm app/helpers/application_helper.rb'
 file 'app/helpers/application_helper.rb', <<-RUBY
 module ApplicationHelper
   def svg_tag(name)
