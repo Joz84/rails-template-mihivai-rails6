@@ -814,6 +814,7 @@ after_bundle do
   gsub_file('config/initializers/active_admin.rb', 'config.current_user_method = :current_admin_user', 'config.current_user_method = :current_user')
 
   #Seed
+  run 'rm db/seeds.rb'
   file 'db/seeds.rb',
   add_seed
   # Routes
