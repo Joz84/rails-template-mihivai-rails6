@@ -118,7 +118,7 @@ def add_pages_legal
   <p>Find me in app/views/pages/legal.html.erb</p>
   <div>
     À tout moment, l’Utilisateur peut faire le choix d’exprimer et de modifier ses souhaits en matière de Cookies. <a href="yourdomain.com">yourdomain.com/</a> pourra en outre faire appel aux services de prestataires externes pour l’aider à recueillir et traiter les informations décrites dans cette section.</p>
-    	      À tout moment, l’Utilisateur peut faire le choix d’exprimer et de modifier ses souhaits en matière de Cookies en cliquant sur le lien ci-dessous. <a href="yourdomain.com/">yourdomain.com/</a> pourra en outre faire appel aux services de prestataires externes pour l’aider à recueillir et traiter les informations décrites dans cette section.</p>
+            À tout moment, l’Utilisateur peut faire le choix d’exprimer et de modifier ses souhaits en matière de Cookies en cliquant sur le lien ci-dessous. <a href="yourdomain.com/">yourdomain.com/</a> pourra en outre faire appel aux services de prestataires externes pour l’aider à recueillir et traiter les informations décrites dans cette section.</p>
     <div class="d-flex justify-content-center mb-4">
       <div class="btn btn-cookie font-size-16px py-2" data-toggle="modal" data-target="#cookiesModal">PERSONNALISER LES COOKIES</div>
     </div>
@@ -905,19 +905,19 @@ file 'config/initializers/default_meta.rb', <<-RUBY
 DEFAULT_META = YAML.load_file(Rails.root.join("config/meta.yml"))
 RUBY
 
-run 'rm app/helpers/application_helper.rb'
-file 'app/helpers/application_helper.rb', <<-RUBY
-module ApplicationHelper
-  def svg_tag(name)
-    file_path = "#{Rails.root}/app/assets/images/#{name}.svg"
-    if File.exists?(file_path)
-      File.read(file_path).html_safe
-    else
-      '(not found)'
-    end
-  end
-end
-RUBY
+# run 'rm app/helpers/application_helper.rb'
+# file 'app/helpers/application_helper.rb', <<-RUBY
+# module ApplicationHelper
+#   def svg_tag(name)
+#     file_path = "#{Rails.root}/app/assets/images/#{name}.svg"
+#     if File.exists?(file_path)
+#       File.read(file_path).html_safe
+#     else
+#       '(not found)'
+#     end
+#   end
+# end
+# RUBY
 
 file 'app/helpers/meta_tags_helper.rb', <<-RUBY
 module MetaTagsHelper
