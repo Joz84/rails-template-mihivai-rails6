@@ -5,8 +5,8 @@
       <br><%= link_to "En savoir plus", legal_path, target: "_blank", class: "link-no-decoration text-cookie" %>
     </p>
     <div class="d-flex">
-      <div id="cookiesGlobalConsent" class="btn btn-cookie font-size-12px mr-3">Accepter</div>
-      <div class="btn btn-cookie font-size-12px" data-toggle="modal" data-target="#cookiesModal">Personnaliser</div>
+      <div id="cookiesGlobalConsent" class="btn btn-cookie font-size-12px me-3">Accepter</div>
+      <div class="btn btn-cookie font-size-12px" data-bs-toggle="modal" data-bs-target="#cookiesModal">Personnaliser</div>
     </div>
   </div>
 </div>
@@ -15,7 +15,7 @@
     <div class="modal-content p-3 ">
       <div class="modal-header border-0 p-0">
         <%= image_tag "logo.png", width: 60 %>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -39,7 +39,7 @@
         </div>
       </div>
       <div class="text-center">
-        <div type="button" id="cookiesConfigBtn" class="btn btn-cookie" data-dismiss="modal">Je valide</div>
+        <div type="button" id="cookiesConfigBtn" class="btn btn-cookie" data-bs-dismiss="modal">Je valide</div>
       </div>
     </div>
   </div>
