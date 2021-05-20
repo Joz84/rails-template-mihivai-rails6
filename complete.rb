@@ -967,7 +967,7 @@ RUBY
   # Webpacker / Yarn
   ########################################
   run 'rm app/javascript/packs/application.js'
-  run 'yarn add popper.js jquery bootstrap'
+  run 'yarn add popper.js jquery bootstrap@4.6.0'
   file 'app/javascript/packs/application.js', <<-JS
 // External imports
 import "bootstrap";
