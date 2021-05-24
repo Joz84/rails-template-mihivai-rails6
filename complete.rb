@@ -636,6 +636,15 @@ file 'app/assets/stylesheets/config/_fonts.scss', <<-CSS
 // Import Google fonts
 @import url("https://fonts.googleapis.com/css?family=Open+Sans:400,300,700|Raleway:400,100,300,700,500");
 @import url('https://fonts.googleapis.com/css?family=Montserrat:400,,500,600&display=swap');
+
+$fonts: 12px 14px 18px 20px;
+
+@each $font in $fonts {
+  .font-size-#{$font} {
+    font-size: $font;
+  }
+}
+
 CSS
 
 file 'app/assets/stylesheets/config/_colors.scss', <<-CSS
@@ -645,9 +654,30 @@ $light-gray: #f9f9f9;
 $dark-transparent: rgba(50, 50, 50, 0.8);
 // color dedicated to cookies (nav/buttons/text) - "blue" should be replace by your theme color
 $cookie: $blue-light;
+
+$colors: $blue-light $dark-gray $light-gray $cookie;
+
+@each $color in $colors {
+  .bg-#{$color} {
+    background-color: $color;
+  }
+  .text-#{$color} {
+    color: $color;
+  }
+}
+
 CSS
 
 file 'app/assets/stylesheets/config/_bootstrap_variables.scss', <<-CSS
+$spacer: 1rem !default;
+$spacers: (
+  0: 0,
+  1: ($spacer * .25),
+  2: ($spacer * .5),
+  3: $spacer,
+  4: ($spacer * 1.5),
+  5: ($spacer * 3)
+)
 CSS
 
 file 'app/assets/stylesheets/units/_button.scss', <<-CSS
