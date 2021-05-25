@@ -33,10 +33,25 @@ def add_gems
   group :development, :test do
     gem 'pry-byebug'
     gem 'pry-rails'
+    gem 'letter_opener'
     gem 'listen', '~> 3.0.5'
     gem 'spring'
     gem 'spring-watcher-listen', '~> 2.0.0'
     gem 'dotenv-rails'
+  end
+  RUBY
+end
+
+def add_letter_opener
+  <<-RUBY
+  LetterOpener.configure do |config|
+    # To overrider the location for message storage.
+    # Default value is `tmp/letter_opener`
+    config.location = Rails.root.join('tmp', 'emails')
+
+    # To render only the message body, without any metadata or extra containers or styling.
+    # config.message_template = :light
+    # Default value is `:default` that renders styled message with showing useful metadata.
   end
   RUBY
 end
@@ -66,6 +81,8 @@ def add_layout
     <%#= stylesheet_pack_tag 'application', media: 'all' %> <!-- Uncomment if you import CSS in app/javascript/packs/application.js -->
     #{"    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload', defer: true %>\n" if Rails.version < "6"}
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload', defer: true %>
+    <!-- 	prevent Chrome animation on loading -->
+    <script type="text/javascript"> </script>
   </head>
   <body>
     <%= render "layouts/cookies_banner" %>
@@ -118,8 +135,8 @@ def add_pages_legal
   <h1>Pages#Legal</h1>
   <p>Find me in app/views/pages/legal.html.erb</p>
   <div>
-    À tout moment, l’Utilisateur peut faire le choix d’exprimer et de modifier ses souhaits en matière de Cookies. <a href="yourdomain.com">yourdomain.com/</a> pourra en outre faire appel aux services de prestataires externes pour l’aider à recueillir et traiter les informations décrites dans cette section.</p>
-            À tout moment, l’Utilisateur peut faire le choix d’exprimer et de modifier ses souhaits en matière de Cookies en cliquant sur le lien ci-dessous. <a href="yourdomain.com/">yourdomain.com/</a> pourra en outre faire appel aux services de prestataires externes pour l’aider à recueillir et traiter les informations décrites dans cette section.</p>
+    À tout moment, l’Utilisateur peut faire le choix d’exprimer et de modifier ses souhaits en matière de Cookies. <a href=<%=ENV["DOMAIN_PROD"]%>><%=ENV["DOMAIN_PROD"]%>/</a> pourra en outre faire appel aux services de prestataires externes pour l’aider à recueillir et traiter les informations décrites dans cette section.</p>
+    	      À tout moment, l’Utilisateur peut faire le choix d’exprimer et de modifier ses souhaits en matière de Cookies en cliquant sur le lien ci-dessous. <a href=<%=ENV["DOMAIN_PROD"]%>><%=ENV["DOMAIN_PROD"]%></a> pourra en outre faire appel aux services de prestataires externes pour l’aider à recueillir et traiter les informations décrites dans cette section.</p>
     <div class="d-flex justify-content-center mb-4">
       <div class="btn btn-cookie font-size-16px py-2" data-toggle="modal" data-target="#cookiesModal">PERSONNALISER LES COOKIES</div>
     </div>
@@ -293,7 +310,7 @@ def add_footer
   <div class="footer-links">
   </div>
   <div class="footer-copyright d-flex flex-column">
-    © 2018 Your Domain
+    © 2018 <%=ENV["DOMAIN"] || "localhost:3000"%>
     <%= link_to legal_path do %>
       Mentions légales
     <% end %>
@@ -367,7 +384,7 @@ def add_postmark_initializer
 ActionMailer::Base.smtp_settings = {
   :address => 'smtp.postmarkapp.com',
   :port => 587,
-  :domain => 'your_domain.com',
+  :domain => ENV['DOMAIN'] || "localhost:3000",
   :user_name => ENV['POSTMARK_USERNAME'],
   :password => ENV['POSTMARK_PASSWORD'],
   :authentication => :plain,
@@ -380,7 +397,8 @@ def add_postmark_production_environment
   <<-RUBY
 \n  config.action_mailer.delivery_method     = :postmark
   config.action_mailer.postmark_settings   = { api_token: ENV['POSTMARK_API_TOKEN'] }
-  config.action_mailer.default_url_options = { host: "your_domain.com" }
+  config.action_mailer.default_url_options = { host: ENV['DOMAIN'] }
+  config.action_mailer.raise_delivery_errors = false
   RUBY
 end
 
@@ -403,7 +421,8 @@ end
 def add_staging_environment
 <<-RUBY
 Rails.application.configure do
-  config.action_mailer.default_url_options = { host: "http://TODO_PUT_YOUR_DOMAIN_HERE/" }
+  config.action_mailer.default_url_options = { host: ENV['DOMAIN'] }
+  config.action_mailer.raise_delivery_errors = false
   # Settings specified here will take precedence over those in config/application.rb.
 
   # Code is not reloaded between requests.
@@ -734,7 +753,6 @@ if Rails.version < "6"
   JS
 end
 
-
 # Cookies
 ########################################
 run 'curl -L https://raw.githubusercontent.com/ClaudineP435433/rails-template-mihivai-rails6/master/check.svg > app/assets/images/check.svg'
@@ -755,6 +773,9 @@ end
 
 file 'config/initializers/email_interceptor.rb',
   add_email_interceptor_initializer
+
+file 'config/initializers/letter_opener.rb',
+  add_letter_opener
 
 file 'config/initializers/smtp.rb',
   add_postmark_initializer
@@ -832,9 +853,8 @@ after_bundle do
   run 'bin/spring stop'
   # Generators: db + simple form + pages controller
   ########################################
-  rails_command 'db:drop db:create db:migrate'
   generate('simple_form:install', '--bootstrap')
-  generate(:controller, 'pages', 'home', '--skip-routes', '--no-test-framework')
+  generate(:controller, 'pages', 'home', 'legal', '--skip-routes','--no-test-framework')
   generate('devise:install')
   generate('devise', 'User')
   generate('migration', 'AddAdminToUsers admin:boolean')
@@ -845,11 +865,11 @@ after_bundle do
   append_file 'config/initializers/active_admin.rb', add_active_admin_method
   gsub_file('config/initializers/active_admin.rb', 'config.authentication_method = :authenticate_admin_user!', 'config.authentication_method = :authenticate_admin!')
   gsub_file('config/initializers/active_admin.rb', 'config.current_user_method = :current_admin_user', 'config.current_user_method = :current_user')
+  rails_command 'db:drop db:create db:migrate'
 
   #Seed
   run 'rm db/seeds.rb'
-  file 'db/seeds.rb',
-  add_seed
+  file 'db/seeds.rb', add_seed
   # Routes
   ########################################
   route "root to: 'pages#home'"
@@ -933,6 +953,7 @@ RUBY
     end
   RUBY
 
+run 'rm app/views/pages/legal.html.erb'
 file 'app/views/pages/legal.html.erb',
   add_pages_legal
 
@@ -1009,7 +1030,10 @@ RUBY
   # Environments
   ########################################
   environment 'config.action_mailer.default_url_options = { host: "http://localhost:3000" }', env: 'development'
-  environment 'config.action_mailer.default_url_options = { host: "http://TODO_PUT_YOUR_DOMAIN_HERE" }', env: 'production'
+  environment 'config.action_mailer.delivery_method = :letter_opener', env: 'development'
+  environment 'config.action_mailer.perform_deliveries = true', env: 'development'
+
+  environment 'config.action_mailer.default_url_options = { host: "ENV["DOMAIN"] }', env: 'production'
   file 'lib/email_interceptor.rb',
     add_email_interceptor_class
 
