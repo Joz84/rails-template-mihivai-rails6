@@ -15,6 +15,7 @@ def add_gems
   gem 'activeadmin'
   gem 'activeadmin_addons'
   gem 'draper'
+  gem 'pundit'
 
   gem 'autoprefixer-rails'
   gem 'font-awesome-sass', '~> 5.6.1'
@@ -840,6 +841,7 @@ after_bundle do
   generate("active_admin:install")
   generate("activeadmin_addons:install")
   generate("draper:install")
+  generate("pundit:install")
   append_file 'config/initializers/active_admin.rb', add_active_admin_method
   gsub_file('config/initializers/active_admin.rb', 'config.authentication_method = :authenticate_admin_user!', 'config.authentication_method = :authenticate_admin!')
   gsub_file('config/initializers/active_admin.rb', 'config.current_user_method = :current_admin_user', 'config.current_user_method = :current_user')
@@ -888,9 +890,26 @@ TXT
   file 'app/controllers/application_controller.rb', <<-RUBY
 class ApplicationController < ActionController::Base
 #{"  protect_from_forgery with: :exception\n" if Rails.version < "5.2"}  before_action :authenticate_user!
+
+  # uncomment to raise error if authorize is not call in controller
+  # after_action :verify_authorized, except: :index, unless: :skip_pundit?
+  # after_action :verify_policy_scoped, only: :index, unless: :skip_pundit?
+
+  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
+
   def default_url_options
     { host: ENV["DOMAIN"] || "localhost:3000" }
   end
+
+  def skip_pundit?
+    devise_controller? || params[:controller] =~ /(^(rails_)?admin)|(^pages$)/
+  end
+
+  def user_not_authorized
+    flash[:alert] = "Vous n'êtes pas autorisés à réaliser cette action."
+    redirect_to(root_path)
+  end
+
 end
 RUBY
 
@@ -1042,6 +1061,7 @@ environment.plugins.prepend('Provide',
 
 JS
   end
+  run "rails webpacker:install:stimulus"
   # error_with-controller
   file('app/controllers/errors_controller.rb',  add_errors_controller)
   file('app/views/errors/not_found.html.erb',   update_error_with_controller)
