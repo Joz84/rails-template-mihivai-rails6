@@ -1095,10 +1095,10 @@ JS
 
   # Mailer devise FR
 
-  # ["confirmation_instructions", "email_changed", "password_change", "reset_password_instructions", "unlock_instructions"].each do |mailer_name|
-  #   run "rm app/views/devise/mailer/#{mailer_name}.html.erb"
-  #   run "curl -L https://raw.githubusercontent.com/ClaudineP435433/rails-template-mihivai-rails6/master/mailer/#{mailer_name}.html.erb > app/views/devise/mailer/#{mailer_name}.html.erb"
-  # end
+  ["confirmation_instructions", "email_changed", "password_change", "reset_password_instructions", "unlock_instructions"].each do |mailer_name|
+    run "rm app/views/devise/mailer/#{mailer_name}.html.erb"
+    run "curl -L https://raw.githubusercontent.com/ClaudineP435433/rails-template-mihivai-rails6/master/mailer/#{mailer_name}.html.erb > app/views/devise/mailer/#{mailer_name}.html.erb"
+  end
 
   # gsub_file('config/initializers/devise.rb', "config.mailer_sender = 'please-change-me-at-config-initializers-devise@example.com'", 'config.mailer_sender = ENV["SENDER_EMAIL"]')
   # gsub_file('config/initializers/devise.rb', "# config.parent_mailer = 'ActionMailer::Base'",   "config.parent_mailer = 'ApplicationMailer'")
