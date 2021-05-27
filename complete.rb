@@ -1101,7 +1101,7 @@ JS
   end
 
   gsub_file('config/initializers/devise.rb', "config.mailer_sender = 'please-change-me-at-config-initializers-devise@example.com'", 'config.mailer_sender = ENV["SENDER_EMAIL"]')
-  gsub_file('config/initializers/devise.rb', "# config.parent_mailer = 'ActionMailer::Base'",   "config.parent_mailer = 'ApplicationMailer'"")
+  gsub_file('config/initializers/devise.rb', "# config.parent_mailer = 'ActionMailer::Base'",   "config.parent_mailer = 'ApplicationMailer'")
 
   # Dotenv
   ########################################
