@@ -1093,6 +1093,12 @@ JS
   route "match '/404', to: 'errors#not_found', via: :all"
   route "match '/500', to: 'errors#internal_server_error', via: :all"
 
+  # Mailer devise FR
+
+  ["confirmation_instructions", "email_changed", "password_change", "reset_password_instructions", "unlock_instructions"].each do |mailer_name|
+    run "rm app/views/devise/mailer/#{mailer_name}.html.erb"
+    run "curl -L https://raw.githubusercontent.com/ClaudineP435433/rails-template-mihivai-rails6/master/mailer/#{mailer_name}.html.erb > app/views/devise/mailer/#{mailer_name}.html.erb"
+  end
   # Dotenv
   ########################################
   run 'touch .env'
