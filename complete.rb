@@ -327,7 +327,7 @@ def add_flash
 <% if notice %>
   <div class="alert alert-info alert-dismissible fade show m-1" role="alert">
     <%= notice %>
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <button type="button" class="close" data-bs-dismiss="alert" aria-label="Close">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
@@ -485,9 +485,11 @@ Rails.application.configure do
   # config.active_job.queue_name_prefix = "drive_a2pconcept_production"
 
   config.action_mailer.perform_caching = false
-  RUBY
-  add_postmark_production_environment
-  <<-RUBY
+
+  config.action_mailer.delivery_method     = :postmark
+  config.action_mailer.postmark_settings   = { api_token: ENV['POSTMARK_API_TOKEN'] }
+  config.action_mailer.default_url_options = { host: ENV['DOMAIN'] }
+  config.action_mailer.raise_delivery_errors = false
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
   # config.action_mailer.raise_delivery_errors = false
@@ -675,14 +677,15 @@ $dark-transparent: rgba(50, 50, 50, 0.8);
 // color dedicated to cookies (nav/buttons/text) - "blue" should be replace by your theme color
 $cookie: $blue-light;
 
-$colors: $blue-light $dark-gray $light-gray $cookie;
+$colors: ("blue-light", $blue-light),("dark-gray",$dark-gray),
+("light-gray",$light-gray), ("cookie",$cookie);
 
 @each $color in $colors {
-  .bg-#{$color} {
-    background-color: $color;
+  .bg-#{nth($color, 1)} {
+    background-color: nth($color, 2);
   }
-  .text-#{$color} {
-    color: $color;
+  .text-#{nth($color, 1)} {
+    color: nth($color, 2);
   }
 }
 
