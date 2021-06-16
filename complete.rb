@@ -486,10 +486,7 @@ Rails.application.configure do
 
   config.action_mailer.perform_caching = false
 
-  config.action_mailer.delivery_method     = :postmark
-  config.action_mailer.postmark_settings   = { api_token: ENV['POSTMARK_API_TOKEN'] }
-  config.action_mailer.default_url_options = { host: ENV['DOMAIN'] }
-  config.action_mailer.raise_delivery_errors = false
+  #{add_postmark_production_environment}
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
   # config.action_mailer.raise_delivery_errors = false
@@ -664,28 +661,6 @@ $fonts: 12px 14px 18px 20px;
 @each $font in $fonts {
   .font-size-#{$font} {
     font-size: $font;
-  }
-}
-
-CSS
-
-file 'app/assets/stylesheets/config/_colors.scss', <<-CSS
-$blue-light: #7ee6e5;
-$dark-gray: #39404d;
-$light-gray: #f9f9f9;
-$dark-transparent: rgba(50, 50, 50, 0.8);
-// color dedicated to cookies (nav/buttons/text) - "blue" should be replace by your theme color
-$cookie: $blue-light;
-
-$colors: ("blue-light", $blue-light),("dark-gray",$dark-gray),
-("light-gray",$light-gray), ("cookie",$cookie);
-
-@each $color in $colors {
-  .bg-#{nth($color, 1)} {
-    background-color: nth($color, 2);
-  }
-  .text-#{nth($color, 1)} {
-    color: nth($color, 2);
   }
 }
 
@@ -1102,7 +1077,7 @@ JS
     run "rm app/views/devise/mailer/#{mailer_name}.html.erb"
     run "curl -L https://raw.githubusercontent.com/ClaudineP435433/rails-template-mihivai-rails6/master/mailer/#{mailer_name}.html.erb > app/views/devise/mailer/#{mailer_name}.html.erb"
   end
-
+  run "curl -L https://raw.githubusercontent.com/ClaudineP435433/rails-template-mihivai-rails6/master/colors.scss > app/assets/stylesheets/config/_colors.scss"
   gsub_file('config/initializers/devise.rb', "config.mailer_sender = 'please-change-me-at-config-initializers-devise@example.com'", 'config.mailer_sender = ENV["SENDER_EMAIL"]')
   gsub_file('config/initializers/devise.rb', "# config.parent_mailer = 'ActionMailer::Base'", "config.parent_mailer = 'ApplicationMailer'")
 

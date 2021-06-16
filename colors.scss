@@ -1,0 +1,18 @@
+$blue-light: #7ee6e5;
+$dark-gray: #39404d;
+$light-gray: #f9f9f9;
+$dark-transparent: rgba(50, 50, 50, 0.8);
+// color dedicated to cookies (nav/buttons/text) - "blue" should be replace by your theme color
+$cookie: $blue-light;
+
+$colors: ("blue-light", $blue-light),("dark-gray",$dark-gray),
+("light-gray",$light-gray), ("cookie",$cookie);
+
+@each $color in $colors {
+  .bg-#{nth($color, 1)} {
+    background-color: nth($color, 2);
+  }
+  .text-#{nth($color, 1)} {
+    color: nth($color, 2);
+  }
+}
