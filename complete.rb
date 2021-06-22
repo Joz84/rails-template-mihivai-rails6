@@ -834,10 +834,10 @@ after_bundle do
   generate('simple_form:install', '--bootstrap')
   generate(:controller, 'pages', 'home', 'legal', '--skip-routes','--no-test-framework')
   generate('migration', 'AddAdminToUsers admin:boolean')
-  generate('devise:install')
-  generate('devise', 'User')
   generate("active_admin:install")
   generate("activeadmin_addons:install")
+  generate('devise:install')
+  generate('devise', 'User')
   generate("draper:install")
   generate("pundit:install")
   append_file 'config/initializers/active_admin.rb', add_active_admin_method
