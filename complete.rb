@@ -833,9 +833,9 @@ after_bundle do
   ########################################
   generate('simple_form:install', '--bootstrap')
   generate(:controller, 'pages', 'home', 'legal', '--skip-routes','--no-test-framework')
+  generate('migration', 'AddAdminToUsers admin:boolean')
   generate('devise:install')
   generate('devise', 'User')
-  generate('migration', 'AddAdminToUsers admin:boolean')
   generate("active_admin:install")
   generate("activeadmin_addons:install")
   generate("draper:install")
